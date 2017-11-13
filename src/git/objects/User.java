@@ -1,5 +1,11 @@
 package git.objects;
 
+import parameters.Texts;
+import utils.Helper;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     private String login;
     private int id;
@@ -12,6 +18,29 @@ public class User {
     private boolean permissions_admin;
     private boolean permissions_push;
     private boolean permissions_pull;
+    private List<Repository> repositories = new ArrayList<>();
+
+    public void addRepo(Repository repository) {
+        repositories.add(repository);
+    }
+
+    public void setRepositories(List<Repository> repositories) {
+        this.repositories = repositories;
+    }
+
+    public List<Repository> getRepositories() {
+        return repositories;
+    }
+
+    public void printRepositoriesNames() {
+        if (repositories.size() > 0) {
+            for (Repository repository : repositories) {
+            Helper.printMsg(String.format(Texts.REPOSITORY_NAME,repository.getName()));
+            }
+        } else {
+            Helper.printMsg(Texts.REPOSITORIES_IS_EMPTY_MSG);
+        }
+    }
 
     public int getId() {
         return id;
@@ -101,7 +130,7 @@ public class User {
         this.permissions_push = permissions_push;
     }
 
-    public void initializeData(){
+    public void initializeData() {
 
     }
 }
