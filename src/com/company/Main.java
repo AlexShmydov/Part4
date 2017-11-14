@@ -16,10 +16,10 @@ public class Main {
         while (password == null || login == null) {
             if (login == null) {
                 Helper.printMsg(Texts.INPUT_LOGIN_MSG);
-                login = Helper.checkInputData(scanner.nextLine(), Settings.loginRegEx);
+                login = Helper.checkInputData(scanner.nextLine(), Settings.LOGIN_REG_EX);
             } else {
                 Helper.printMsg(Texts.INPUT_PASSWORD_MSG);
-                password = Helper.checkInputData(scanner.nextLine(), Settings.passRegEx);
+                password = Helper.checkInputData(scanner.nextLine(), Settings.PASS_REG_EX);
             }
         }
     }

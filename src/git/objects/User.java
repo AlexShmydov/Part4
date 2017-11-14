@@ -20,6 +20,10 @@ public class User {
     private boolean permissions_pull;
     private List<Repository> repositories = new ArrayList<>();
 
+    public User(String login) {
+        this.login = login;
+    }
+
     public void addRepo(Repository repository) {
         repositories.add(repository);
     }
@@ -35,7 +39,7 @@ public class User {
     public void printRepositoriesNames() {
         if (repositories.size() > 0) {
             for (Repository repository : repositories) {
-            Helper.printMsg(String.format(Texts.REPOSITORY_NAME,repository.getName()));
+                Helper.printMsg(String.format(Texts.REPOSITORY_NAME, repository.getName()));
             }
         } else {
             Helper.printMsg(Texts.REPOSITORIES_IS_EMPTY_MSG);

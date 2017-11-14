@@ -6,6 +6,15 @@ public class CurrentUser extends User {
     private String password;
     private String base64Authorization;
 
+    public CurrentUser(String login) {
+        super(login);
+    }
+
+    public CurrentUser(String login, String password) {
+        super(login);
+        setPassword(password);
+    }
+
     public void setPassword(String password) {
         this.password = password;
         calculateBase64Authorization();
