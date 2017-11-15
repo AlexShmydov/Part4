@@ -4,24 +4,46 @@ import parameters.Texts;
 import utils.Helper;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class User {
     private String login;
+    private String password;
+    private String base64Authorization;
     private int id;
     private String avatar_url;
     private String gravatar_id;
     private String url;
     private String html_url;
     private String type;
-    private String site_admin;
-    private boolean permissions_admin;
-    private boolean permissions_push;
-    private boolean permissions_pull;
+    private int collaborators;
     private List<Repository> repositories = new ArrayList<>();
+
+    public User(String login, String password) {
+        this.login = login;
+        setPassword(password);
+    }
 
     public User(String login) {
         this.login = login;
+    }
+
+    public User() {
+
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+        calculateBase64Authorization();
+    }
+
+    private void calculateBase64Authorization() {
+        base64Authorization = Base64.getEncoder().encodeToString(password.getBytes());
+    }
+
+    public String getBase64Authorization() {
+        return base64Authorization;
     }
 
     public void addRepo(Repository repository) {
@@ -44,6 +66,15 @@ public class User {
         } else {
             Helper.printMsg(Texts.REPOSITORIES_IS_EMPTY_MSG);
         }
+    }
+
+    public boolean isRepositoryOfUser(String repoName) {
+        for (Repository repository : repositories) {
+            if (repository.getName().toUpperCase().equals(repoName.trim().toUpperCase())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public int getId() {
@@ -78,14 +109,6 @@ public class User {
         this.login = login;
     }
 
-    public String getSite_admin() {
-        return site_admin;
-    }
-
-    public void setSite_admin(String site_admin) {
-        this.site_admin = site_admin;
-    }
-
     public String getType() {
         return type;
     }
@@ -110,28 +133,12 @@ public class User {
         this.html_url = html_url;
     }
 
-    public boolean isPermissions_admin() {
-        return permissions_admin;
+    public int getCollaborators() {
+        return collaborators;
     }
 
-    public boolean isPermissions_pull() {
-        return permissions_pull;
-    }
-
-    public boolean isPermissions_push() {
-        return permissions_push;
-    }
-
-    public void setPermissions_admin(boolean permissions_admin) {
-        this.permissions_admin = permissions_admin;
-    }
-
-    public void setPermissions_pull(boolean permissions_pull) {
-        this.permissions_pull = permissions_pull;
-    }
-
-    public void setPermissions_push(boolean permissions_push) {
-        this.permissions_push = permissions_push;
+    public void setCollaborators(int collaborators) {
+        this.collaborators = collaborators;
     }
 
     public void initializeData() {

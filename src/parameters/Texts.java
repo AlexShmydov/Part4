@@ -5,10 +5,12 @@ public class Texts {
     public static final String INPUT_LOGIN_MSG = "Input gitHub LOGIN:";
     public static final String INPUT_PASSWORD_MSG = "Input gitHub PASSWORD:";
     public static final String INVALID_INPUT_DATA = "Invalid data! Try again!\n";
+    public static final String INPUT_REPO_NAME_MSG = "Select name of user's repo and enter it\n";
     public static final String REPOSITORIES_IS_EMPTY_MSG = "User not have any repository!";
     public static final String REPOSITORY_NAME = "Repository: %s";
-    public static final String COLLOBORATORS_REPO_MSG = "Collaborators of your repo are:";
-    public static final String COLLOBORATORS_TEMPLATE_MSG = "User: %s with ID: %s";
+    public static final String COLLABORATORS_OF_YOUR_REPO_MSG = "Collaborators of your repo are:";
+    public static final String COLLABORATORS_IS_NULL_MSG = "No collaborators for your repo";
+    public static final String COLLABORATORS_TEMPLATE_MSG = "User: %s with ID: %s";
     public static final String INVITE_TO_MSG = "Input login of user which will be invite to your repo";
     public static final String INVITE_RESULT_SUCCESSFULL_MSG = "Invite for %s user was sended successfully";
     public static final String INVITE_RESULT_FAILED_MSG = "Invite for %s user was not sended successfully :(";
