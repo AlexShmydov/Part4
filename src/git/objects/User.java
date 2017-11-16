@@ -17,7 +17,6 @@ public class User {
     private String url;
     private String html_url;
     private String type;
-    private int collaborators;
     private List<Repository> repositories = new ArrayList<>();
 
     public User(String login, String password) {
@@ -39,7 +38,7 @@ public class User {
     }
 
     private void calculateBase64Authorization() {
-        base64Authorization = Base64.getEncoder().encodeToString(password.getBytes());
+        base64Authorization = Base64.getEncoder().encodeToString(String.format("%s:%s",login,password).getBytes());
     }
 
     public String getBase64Authorization() {
@@ -131,17 +130,5 @@ public class User {
 
     public void setHtml_url(String html_url) {
         this.html_url = html_url;
-    }
-
-    public int getCollaborators() {
-        return collaborators;
-    }
-
-    public void setCollaborators(int collaborators) {
-        this.collaborators = collaborators;
-    }
-
-    public void initializeData() {
-
     }
 }

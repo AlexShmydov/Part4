@@ -3,8 +3,8 @@ package parameters;
 public class Requests {
     private static String apiUsers = "/users/%s";
     private static String apiUsersRepos = "/users/%s/repos";
-    private static String apiGetColloborators = "/repos/%s/%s/collaborators";
-    private static String apiAddColloboratorToRepo = "/repos/%s/%s/collaborators/%s";
+    private static String apiGetCollaborators = "/repos/%s/%s/collaborators";
+    private static String apiAddCollaboratorToRepo = "/repos/%s/%s/collaborators/%s";
 
     public static final String login = "{login}";
     public static final String repo = "{repo}";
@@ -15,14 +15,14 @@ public class Requests {
     }
 
     public static String getApiUsersRepos() {
-        return String.format(apiUsersRepos, repo);
+        return String.format(apiUsersRepos, login);
     }
 
-    public static String getApiGetColloborators() {
-        return String.format(apiGetColloborators, login, repo);
+    public static String getApiGetCollaborators() {
+        return String.format(apiGetCollaborators, login, repo);
     }
 
-    public static String getApiAddColloboratorToRepo() {
-        return String.format(apiAddColloboratorToRepo, login, repo, userName);
+    public static String getApiAddCollaboratorToRepo() {
+        return String.format(apiAddCollaboratorToRepo, login, repo, userName);
     }
 }
