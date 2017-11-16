@@ -19,10 +19,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Helper.printMsg(Texts.WELCOME_MSG);
-        /***/
-        login = "Mashkow";
-        password = "hjpjdsq18ckjy";
-        //***/
+
         while (password == null || login == null) {
             if (login == null) {
                 Helper.printMsg(Texts.INPUT_LOGIN_MSG);

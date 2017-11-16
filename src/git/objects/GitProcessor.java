@@ -80,9 +80,9 @@ public class GitProcessor {
                 Helper.printMsg(Texts.COLLABORATORS_OF_YOUR_REPO_MSG);
                 collaborators.stream().forEach(collaborator -> Helper.printMsg(
                         String.format(Texts.COLLABORATORS_TEMPLATE_MSG, collaborator.getLogin(), collaborator.getId())));
+            } else {
+                Helper.printMsg(Texts.COLLABORATORS_IS_NULL_MSG);
             }
-        } else {
-            Helper.printMsg(Texts.COLLABORATORS_IS_NULL_MSG);
         }
         return collaborators;
     }
