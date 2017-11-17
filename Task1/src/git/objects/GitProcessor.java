@@ -5,8 +5,8 @@ import org.apache.http.client.methods.HttpPut;
 import parameters.Requests;
 import parameters.Settings;
 import parameters.Texts;
-import parameters.responses.ReposResponse;
-import parameters.responses.UsersResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import usersExceptions.HttpsExceptions;
 import utils.Helper;
 import utils.HttpHelper;
@@ -26,7 +26,7 @@ public class GitProcessor {
                 Settings.GIT_API_URL + Requests.getApiUsers().replace(Requests.login, userName),
                 null)
                 .toString();
-        return setBasicUserInformationFromGitResponse(responseBody, user);
+        return getUserFromJSON(responseBody);
     }
 
     public static User getCurrentUser(String login, String password) throws IOException, HttpsExceptions {
@@ -39,7 +39,9 @@ public class GitProcessor {
                 Settings.GIT_API_URL + Requests.getApiUsers().replace(Requests.login, login),
                 headers)
                 .toString();
-        return setBasicUserInformationFromGitResponse(responseBody, currentUser);
+        User user = getUserFromJSON(responseBody);
+        user.setPassword(password);
+        return user;
     }
 
     public static List<Repository> getUsersRepositories(User user) throws IOException, HttpsExceptions {
@@ -49,18 +51,14 @@ public class GitProcessor {
                 null)
                 .toString();
         user.setRepositories(new ArrayList<>());
-        List<String> repos = HttpHelper.getJSONObjectsFromArray(responseBody);
-        for (String repo : repos) {
-            user.addRepo(setBasicRepoInformationFromGitResponse(repo, new Repository()));
-        }
-        if (repos.size() == 0) {
+        user.setRepositories(getAllRepositoriesFromJSON(responseBody));
+        if (user.getRepositories().size() == 0) {
             Helper.printMsg(Texts.REPOSITORIES_IS_EMPTY_MSG);
         }
         return user.getRepositories();
     }
 
     public static List<User> getCollaboratorsOfUsersRepo(User user, String repoName, boolean needPrint) throws IOException, HttpsExceptions {
-        List<User> collaborators = new ArrayList<>();
         Map<String, String> headers = new HashMap<>();
         headers.put(Settings.HEADER_AUTHORIZATION,
                 String.format(Settings.HEADER_AUTHORIZATION_VALUE, user.getBase64Authorization()));
@@ -71,10 +69,7 @@ public class GitProcessor {
                         .replace(Requests.repo, repoName),
                 headers)
                 .toString();
-        List<String> usersJsonObjects = HttpHelper.getJSONObjectsFromArray(responseBody);
-        for (String userObject : usersJsonObjects) {
-            collaborators.add(setBasicUserInformationFromGitResponse(userObject, new User()));
-        }
+        List<User> collaborators = getAllUsersFromJSON(responseBody);
         if (needPrint) {
             if (collaborators.size() != 0) {
                 Helper.printMsg(Texts.COLLABORATORS_OF_YOUR_REPO_MSG);
@@ -122,23 +117,22 @@ public class GitProcessor {
         }
     }
 
-    private static User setBasicUserInformationFromGitResponse(String response, User user) {
-        user.setLogin(HttpHelper.getJSONParameterByKey(response, UsersResponse.LOGIN));
-        user.setId(Integer.parseInt(HttpHelper.getJSONParameterByKey(response, UsersResponse.ID)));
-        user.setAvatar_url(HttpHelper.getJSONParameterByKey(response, UsersResponse.AVATAR_URL));
-        user.setGravatar_id(HttpHelper.getJSONParameterByKey(response, UsersResponse.GRAVATAR_ID));
-        user.setType(HttpHelper.getJSONParameterByKey(response, UsersResponse.TYPE));
-        user.setUrl(HttpHelper.getJSONParameterByKey(response, UsersResponse.URL));
-        user.setHtml_url(HttpHelper.getJSONParameterByKey(response, UsersResponse.HTML_URL));
-        return user;
+    private static User getUserFromJSON(String json) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(json, User.class);
     }
 
-    private static Repository setBasicRepoInformationFromGitResponse(String response, Repository repository) {
-        repository.setId(Integer.parseInt(HttpHelper.getJSONParameterByKey(response, ReposResponse.ID)));
-        repository.setFullName(HttpHelper.getJSONParameterByKey(response, ReposResponse.FULL_NAME));
-        repository.setHtmlUrl(HttpHelper.getJSONParameterByKey(response, ReposResponse.HTML_URL));
-        repository.setName(HttpHelper.getJSONParameterByKey(response, ReposResponse.NAME));
-        repository.setUrl(HttpHelper.getJSONParameterByKey(response, ReposResponse.URL));
-        return repository;
+    public static List<User> getAllUsersFromJSON(String json) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<User> repositories = mapper.readValue(json, new TypeReference<List<User>>() {
+        });
+        return repositories;
+    }
+
+    public static List<Repository> getAllRepositoriesFromJSON(String json) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Repository> repositories = mapper.readValue(json, new TypeReference<List<Repository>>() {
+        });
+        return repositories;
     }
 }

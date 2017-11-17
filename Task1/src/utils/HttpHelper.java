@@ -6,16 +6,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import parameters.ErrorMessages;
 import usersExceptions.HttpsExceptions;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class HttpHelper {
@@ -57,19 +53,5 @@ public class HttpHelper {
         } else {
             throw new HttpsExceptions(String.format(ErrorMessages.UNKNOWN_TYPE_REQUEST, methodName));
         }
-    }
-
-    public static String getJSONParameterByKey(String jsonBody, String key) {
-        JSONObject obj = new JSONObject(jsonBody);
-        return obj.get(key).toString();
-    }
-
-    public static List<String> getJSONObjectsFromArray(String jsonBody) {
-        List<String> jsonArrays = new ArrayList<>();
-        JSONArray array = new JSONArray(jsonBody);
-        for (int i = 0; i < array.length(); i++) {
-            jsonArrays.add(array.get(i).toString());
-        }
-        return jsonArrays;
     }
 }

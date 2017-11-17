@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     private String login;
     private String password;
