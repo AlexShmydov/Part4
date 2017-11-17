@@ -54,11 +54,6 @@ public class GitProcessor {
         return mapper.readValue(json, User.class);
     }
 
-    public static Repository getRepositoryFromJSON(String json) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(json, Repository.class);
-    }
-
     public static List<User> getAllUsersFromJSON(String json) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         List<User> repositories = mapper.readValue(json, new TypeReference<List<User>>() {
@@ -80,8 +75,6 @@ public class GitProcessor {
                 HttpMethod.GET);
         user.setRepositories(new ArrayList<>());
         user.setRepositories(getAllRepositoriesFromJSON(response));
-        List<String> aa = new ArrayList<>();
-        int a = aa.size();
         if (user.getRepositories().size() == 0) {
             Helper.printMsg(Texts.REPOSITORIES_IS_EMPTY_MSG);
         }
