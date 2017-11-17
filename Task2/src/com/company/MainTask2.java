@@ -10,7 +10,7 @@ import utils.Helper;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Main {
+public class MainTask2 {
     private static String password;
     private static String login;
     private static String repoName;
@@ -19,7 +19,6 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Helper.printMsg(Texts.WELCOME_MSG);
-
         while (password == null || login == null) {
             if (login == null) {
                 Helper.printMsg(Texts.INPUT_LOGIN_MSG);
@@ -32,9 +31,8 @@ public class Main {
         try {
             User currentUser = GitProcessor.getCurrentUser(login, password);
             currentUser.setRepositories(GitProcessor.getUsersRepositories(currentUser));
-            Helper.printMsg(String.format(Texts.REPOSITORIES_LIST_MSG,currentUser.getLogin()));
+            Helper.printMsg(String.format(Texts.REPOSITORIES_LIST_MSG, currentUser.getLogin()));
             currentUser.printRepositoriesNames();
-
             while (repoName == null) {
                 Helper.printMsg(Texts.INPUT_REPO_NAME_MSG);
                 repoName = scanner.nextLine();
@@ -44,7 +42,6 @@ public class Main {
                 }
             }
             GitProcessor.getCollaboratorsOfUsersRepo(currentUser, repoName, true);
-
             while (collaboratorName == null) {
                 Helper.printMsg(Texts.INVITE_TO_MSG);
                 collaboratorName = Helper.checkInputData(scanner.nextLine(), Settings.LOGIN_REG_EX);
